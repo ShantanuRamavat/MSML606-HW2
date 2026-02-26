@@ -106,7 +106,17 @@ class HomeWork2:
     # you can see the examples in p2_traversals.csv
 
     def postfixNotationPrint(self, head: TreeNode) -> list:
-        pass
+        result = []
+
+        def postorder(node):
+            if node is None:
+                return
+            postorder(node.left)           # left
+            postorder(node.right)          # right
+            result.append(str(node.val))   # root
+
+        postorder(head)
+        return result
 
 
 class Stack:
