@@ -129,8 +129,28 @@ class Stack:
     # Use your own stack implementation to solve problem 3
 
     def __init__(self):
-        # TODO: initialize the stack
-        pass
+        self.data = []
+        self.top = -1
+
+    def is_empty(self):
+        return self.top == -1
+
+    def push(self, item):
+        self.data.append(item)
+        self.top += 1
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("Pop from empty stack")
+        item = self.data[self.top]
+        self.data.pop()
+        self.top -= 1
+        return item
+
+    def peek(self):
+        if self.is_empty():
+            raise IndexError("Peek from empty stack")
+        return self.data[self.top]
 
     # Problem 3: Write code to evaluate a postfix expression using stack and return the integer value
     # Use stack which you implemented above for this problem
@@ -145,9 +165,33 @@ class Stack:
 
     # DO NOT USE EVAL function for evaluating the expression
 
-    def evaluatePostfix(exp: str) -> int:
-        # TODO: implement this using your Stack class
-        pass
+    def evaluatePostfix(self, exp: str) -> int:
+        operators = {"+", "-", "*", "/"}
+
+        tokens = exp.split()
+
+        for token in tokens:
+            if token not in operators:
+                # token is an integer (can be negative)
+                self.push(int(token))
+            else:
+                # operator: pop right then left
+                b = self.pop()
+                a = self.pop()
+
+                if token == "+":
+                    self.push(a + b)
+                elif token == "-":
+                    self.push(a - b)
+                elif token == "*":
+                    self.push(a * b)
+                elif token == "/":
+                    if b == 0:
+                        raise ZeroDivisionError("division by zero")
+                    # integer division like typical DS problems (truncate toward 0)
+                    self.push(int(a / b))
+
+        return self.pop()
 
 
 # Main Function. Do not edit the code below
